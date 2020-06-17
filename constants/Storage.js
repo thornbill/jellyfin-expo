@@ -7,5 +7,8 @@ const prefix = 'org.jellyfin.expo';
 
 export default {
   ActiveServer: `${prefix}:ActiveServer`,
+  Downloads: `${prefix}:Downloads`,
   Servers: `${prefix}:Servers`
 };
+
+export const DownloadDirectory = 'Downloads/';

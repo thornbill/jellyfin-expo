@@ -13,9 +13,10 @@ import Constants from 'expo-constants';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import PropTypes from 'prop-types';
+import * as FileSystem from 'expo-file-system';
 
 import Colors from '../constants/Colors';
-import StorageKeys from '../constants/Storage';
+import StorageKeys, { DownloadDirectory } from '../constants/Storage';
 import CachingStorage from '../utils/CachingStorage';
 import { getAppName, getSafeDeviceName } from '../utils/Device';
 import JellyfinValidator from '../utils/JellyfinValidator';
@@ -100,6 +101,27 @@ class HomeScreen extends React.Component {
     try {
       const { event, data } = JSON.parse(state.data);
       switch (event) {
+        case 'downloadFile':
+          try {
+            console.log('Downloading:', data.file);
+            // Ensure the Downloads directory exists
+            const { exists, isDirectory } = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}${DownloadDirectory}`);
+            console.log(`${FileSystem.documentDirectory}${DownloadDirectory}`, exists, isDirectory);
+            if (!exists || !isDirectory) {
+              await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}${DownloadDirectory}`);
+            }
+            // TODO: Allow pausing and resuming downloads
+            // TODO: Check that the file is a supported type before download
+            const result = await FileSystem.downloadAsync(data.file.url, `${FileSystem.documentDirectory}${DownloadDirectory}${encodeURI(data.file.filename)}`);
+            const downloads = await CachingStorage.getInstance().getItem(StorageKeys.Downloads) || [];
+            downloads.push(data.file);
+            await CachingStorage.getInstance().setItem(StorageKeys.Downloads, downloads);
+            console.log('Download complete:', result);
+          } catch (err) {
+            console.warn('Failed to download file', err);
+            // TODO: Show message when download fails
+          }
+          break;
         case 'enableFullscreen':
           this.setState({ isFullscreen: true });
           break;

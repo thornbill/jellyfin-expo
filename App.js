@@ -13,6 +13,7 @@ import * as Font from 'expo-font';
 import * as ScreenOrientation from 'expo-screen-orientation';
 import { Ionicons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
+import { Audio } from 'expo-av';
 
 import AppNavigator from './navigation/AppNavigator';
 import Theme from './utils/Theme';
@@ -25,6 +26,14 @@ function App({ skipLoadingScreen }) {
     if (Platform.OS === 'ios' && !Platform.isPad) {
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
     }
+
+    // Setup audio preferences
+    Audio.setAudioModeAsync({
+      playsInSilentModeIOS: true,
+      staysActiveInBackground: true,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX
+    });
   }, []);
 
   const loadImagesAsync = () => {

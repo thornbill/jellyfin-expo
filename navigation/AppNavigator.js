@@ -14,6 +14,7 @@ import Colors from '../constants/Colors';
 import StorageKeys from '../constants/Storage';
 import CachingStorage from '../utils/CachingStorage';
 import AddServerScreen from '../screens/AddServerScreen';
+import DownloadsScreen from '../screens/DownloadsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -40,6 +41,8 @@ function TabIcon(routeName, color, size) {
     iconName = 'ios-tv';
   } else if (routeName === 'Settings') {
     iconName = 'ios-cog';
+  } else if (routeName === 'Downloads') {
+    iconName = 'ios-cloud-download';
   }
 
   return (
@@ -58,6 +61,7 @@ function Main() {
       }}
     >
       <Tab.Screen name='Home' component={HomeScreen} />
+      <Tab.Screen name='Downloads' component={DownloadsScreen} />
       <Tab.Screen name='Settings' component={SettingsScreen} />
     </Tab.Navigator>
   );
@@ -102,7 +106,7 @@ function AppNavigator() {
               // In our case, it's "Main" as that's the first screen inside the navigator
               route.params?.screen || 'Main';
             return ({
-              headerShown: routeName === 'Settings',
+              headerShown: !['Home', 'Main'].includes(routeName),
               title: routeName
             });
           }}
