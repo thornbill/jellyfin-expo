@@ -9,3 +9,5 @@ export default {
 	ActiveServer: `${prefix}:ActiveServer`,
 	Servers: `${prefix}:Servers`
 };
+
+export const DownloadDirectory = 'Downloads/';

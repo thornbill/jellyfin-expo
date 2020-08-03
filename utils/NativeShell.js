@@ -15,7 +15,7 @@ function postExpoEvent(event, data) {
 
 // List of supported features as reported in Safari
 const ExpoSupportedFeatures = [
-  // 'filedownload',
+  'filedownload',
   'exitmenu',
   'plugins',
   'externallinks',
@@ -103,8 +103,8 @@ window.NativeShell = {
     }
   },
 
-  downloadFile: function(url) {
-    postExpoEvent('downloadFile', { url: url });
+  downloadFile: function(data) {
+    postExpoEvent('downloadFile', data);
   },
 
   enableFullscreen: function() {

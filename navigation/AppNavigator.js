@@ -17,6 +17,7 @@ import Colors from '../constants/Colors';
 import AddServerScreen from '../screens/AddServerScreen';
 import ErrorScreen from '../screens/ErrorScreen';
 import HomeScreen from '../screens/HomeScreen';
+import DownloadsScreen from '../screens/DownloadsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import { getIconName } from '../utils/Icons';
 
@@ -41,6 +42,8 @@ function TabIcon(routeName, color, size) {
 	let iconName = null;
 	if (routeName === 'Home') {
 		iconName = getIconName('tv');
+	} else if (routeName === 'Downloads') {
+		iconName = getIconName('cloud-download');
 	} else if (routeName === 'Settings') {
 		iconName = getIconName('cog');
 	}
@@ -105,6 +108,13 @@ const Main = observer(() => {
 				}}
 			/>
 			<Tab.Screen
+				name='Downloads'
+				component={DownloadsScreen}
+				options={{
+					title: t('headings.downloads')
+				}}
+			/>
+			<Tab.Screen
 				name='Settings'
 				component={SettingsScreen}
 				options={{
@@ -140,7 +150,7 @@ const AppNavigator = observer(() => {
 							// In our case, it's "Main" as that's the first screen inside the navigator
 							route.params?.screen || 'Main';
 						return ({
-							headerShown: routeName === 'Settings',
+							headerShown: !['Home', 'Main'].includes(routeName),
 							title: t(`headings.${routeName.toLowerCase()}`)
 						});
 					}}
