@@ -4,12 +4,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
 import * as FileSystem from 'expo-file-system';
 import { v4 as uuidv4 } from 'uuid';
+
+import { ensurePathExists } from '../utils/File';
+import { getSdk } from '../utils/Sdk';
 
 export default class DownloadModel {
 	isComplete = false
 	isDownloading = false
+	isFailed = false
 	isNew = true
 
 	apiKey: string
@@ -23,6 +28,7 @@ export default class DownloadModel {
 	filename: string
 
 	downloadUrl: string
+	resumable?: FileSystem.DownloadResumable
 
 	constructor(
 		itemId: string,
@@ -72,5 +78,50 @@ export default class DownloadModel {
 			...params
 		});
 		return new URL(`${this.serverUrl}Videos/${this.itemId}/stream.mp4?${streamParams.toString()}`);
+	}
+
+	async downloadFile(deviceId: string) {
+		console.debug('[DownloadModel] downloading "%s"', this.filename);
+		if (this.isDownloading) return;
+
+		// Download the file
+		try {
+			await ensurePathExists(this.localPath);
+			const url = this.getStreamUrl(deviceId);
+			this.resumable = FileSystem.createDownloadResumable(
+				url.toString(),
+				this.uri,
+				{},
+				(/*{ totalBytesWritten }*/) => {
+					// FIXME: We should save the download progress in the model for display
+					// but this needs throttling
+				}
+			);
+
+			this.isDownloading = true;
+			this.isFailed = false;
+			await this.resumable.downloadAsync();
+			this.isComplete = true;
+			this.isDownloading = false;
+			this.resumable = undefined;
+		} catch (e) {
+			console.error('[DownloadModel] Download failed', e);
+			this.isDownloading = false;
+			this.isFailed = true;
+		}
+
+		// Always report download has stopped to cleanup transcode files on server
+		const serverUrl = this.serverUrl.endsWith('/') ? this.serverUrl.slice(0, -1) : this.serverUrl;
+		const api = getSdk(deviceId).createApi(serverUrl, this.apiKey);
+		console.log('[DownloadModel] Reporting download stopped', this.sessionId);
+		getPlaystateApi(api)
+			.reportPlaybackStopped({
+				playbackStopInfo: {
+					PlaySessionId: this.sessionId
+				}
+			})
+			.catch(e => {
+				console.error('[DownloadModel] Failed reporting download stopped', e.response || e.request || e.message);
+			});
 	}
 }

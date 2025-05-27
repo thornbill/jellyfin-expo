@@ -8,6 +8,8 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 
+import pkg from '../package.json';
+
 import iOSProfile from './profiles/ios';
 import iOS10Profile from './profiles/ios10';
 import iOS12Profile from './profiles/ios12';
@@ -15,6 +17,10 @@ import iOSFmp4Profile from './profiles/iosFmp4';
 
 export function getAppName() {
 	return `Jellyfin Mobile (${Device.osName})`;
+}
+
+export function getAppVersion() {
+	return Constants.nativeAppVersion || pkg.version;
 }
 
 export function getSafeDeviceName() {
