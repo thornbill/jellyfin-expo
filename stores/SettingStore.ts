@@ -23,10 +23,10 @@ type State = {
 	activeServer: number,
 
 	/** Is device rotation lock enabled */
-	isRotationLockEnabled: boolean,
+	isRotationLockEnabled?: boolean,
 
 	/** Is screen lock active when media is playing */
-	isScreenLockEnabled: boolean,
+	isScreenLockEnabled?: boolean,
 
 	/** Are tab labels enabled */
 	isTabLabelsEnabled: boolean,
@@ -55,6 +55,8 @@ type State = {
 
 type Actions = {
 	set: (v: Partial<State>) => void,
+	getIsRotationLockEnabled: () => boolean,
+	getIsScreenLockEnabled: () => boolean,
 	getTheme: () => any, // TODO: get typing on themes and put it here
 	reset: () => void
 }
@@ -63,13 +65,10 @@ export type SettingStore = State & Actions
 
 const STORE_NAME = 'SettingStore';
 
-// This initial state must be a method because it has computed values that *might* change over time (tests & functionality broke without this)
-const initialState: () => State = () => ({
+const initialState: State = {
 	activeServer: 0,
-	isRotationLockEnabled: Platform.OS === 'ios' && !Platform.isPad,
-	isScreenLockEnabled: Platform.OS === 'ios'
-		? !!Platform.Version && compareVersions.compare(Platform.Version, '14', '<')
-		: true,
+	isRotationLockEnabled: undefined,
+	isScreenLockEnabled: undefined,
 	isTabLabelsEnabled: true,
 	themeId: 'dark',
 	isSystemThemeEnabled: false,
@@ -78,32 +77,48 @@ const initialState: () => State = () => ({
 	isExperimentalNativeAudioPlayerEnabled: false,
 	isExperimentalDownloadsEnabled: false,
 	systemThemeId: null
-});
+};
 
-const persistKeys = Object.keys(initialState());
+const persistKeys = Object.keys(initialState);
 
 export const useSettingStore = create<SettingStore>()(
 	logger(
 		persist(
 			(_set, _get) => ({
-				...initialState(),
+				...initialState,
 				set: state => _set(prev => ({
 					...prev,
 					...state
 				})),
+				getIsRotationLockEnabled: () => {
+					const state = _get();
+					const { isRotationLockEnabled } = state;
+					return isRotationLockEnabled !== undefined ?
+						isRotationLockEnabled :
+						Platform.OS === 'ios' && !Platform.isPad;
+				},
+				getIsScreenLockEnabled: () => {
+					const state = _get();
+					const { isScreenLockEnabled } = state;
+					const defaultValue = Platform.OS === 'ios' ?
+						!!Platform.Version && compareVersions.compare(Platform.Version, '14', '<') :
+						true;
+					return isScreenLockEnabled !== undefined ?
+						isScreenLockEnabled :
+						defaultValue;
+				},
 				getTheme: () => {
 					const state = _get();
-					const id = state.isSystemThemeEnabled
-					&& state.systemThemeId
-					&& state.systemThemeId !== 'no-preference'
-						? state.systemThemeId
-						: state.themeId;
+					const { isSystemThemeEnabled, systemThemeId, themeId } = state;
+					const id = (isSystemThemeEnabled && systemThemeId && systemThemeId !== 'no-preference') ?
+						systemThemeId :
+						themeId;
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore TODO: This is because Themes doesn't have type hints.
 					return Themes[id] || Themes.dark;
 				},
 				reset: () => {
-					_set({ ...initialState() });
+					_set({ ...initialState });
 				}
 			}), {
 				name: STORE_NAME,

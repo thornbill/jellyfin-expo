@@ -26,8 +26,8 @@ describe('SettingStore', () => {
 			store.result.current.reset();
 		});
 		expect(store.result.current.activeServer).toBe(0);
-		expect(store.result.current.isRotationLockEnabled).toBe(true);
-		expect(store.result.current.isScreenLockEnabled).toBe(false);
+		expect(store.result.current.isRotationLockEnabled).toBeUndefined();
+		expect(store.result.current.isScreenLockEnabled).toBeUndefined();
 		expect(store.result.current.isTabLabelsEnabled).toBe(true);
 		expect(store.result.current.themeId).toBe('dark');
 		expect(store.result.current.systemThemeId).toBeNull();
@@ -48,7 +48,7 @@ describe('SettingStore', () => {
 		});
 		store.rerender();
 
-		expect(store.result.current.isRotationLockEnabled).toBe(false);
+		expect(store.result.current.getIsRotationLockEnabled()).toBe(false);
 	});
 
 	it('should enable screen lock on older iOS versions', () => {
@@ -58,7 +58,7 @@ describe('SettingStore', () => {
 			store.result.current.reset();
 		});
 
-		expect(store.result.current.isScreenLockEnabled).toBe(true);
+		expect(store.result.current.getIsScreenLockEnabled()).toBe(true);
 	});
 
 	it('should enable screen lock on non-iOS platforms', () => {
@@ -68,7 +68,7 @@ describe('SettingStore', () => {
 			store.result.current.reset();
 		});
 
-		expect(store.result.current.isScreenLockEnabled).toBe(true);
+		expect(store.result.current.getIsScreenLockEnabled()).toBe(true);
 	});
 
 	it('should use the system theme when enabled', () => {
@@ -154,8 +154,8 @@ describe('SettingStore', () => {
 		});
 
 		expect(store.result.current.activeServer).toBe(0);
-		expect(store.result.current.isRotationLockEnabled).toBe(true);
-		expect(store.result.current.isScreenLockEnabled).toBe(false);
+		expect(store.result.current.isRotationLockEnabled).toBeUndefined();
+		expect(store.result.current.isScreenLockEnabled).toBeUndefined();
 		expect(store.result.current.isTabLabelsEnabled).toBe(true);
 		expect(store.result.current.themeId).toBe('dark');
 		expect(store.result.current.systemThemeId).toBeNull();

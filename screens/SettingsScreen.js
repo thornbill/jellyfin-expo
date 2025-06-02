@@ -117,7 +117,7 @@ const SettingsScreen = () => {
 		const settingsData = [{
 			key: 'keep-awake-switch',
 			title: t('settings.keepAwake'),
-			value: settingStore.isScreenLockEnabled,
+			value: settingStore.getIsScreenLockEnabled(),
 			onValueChange: (value) => settingStore.set({ isScreenLockEnabled: value })
 		}];
 
@@ -127,7 +127,7 @@ const SettingsScreen = () => {
 			settingsData.push({
 				key: 'rotation-lock-switch',
 				title: t('settings.rotationLock'),
-				value: settingStore.isRotationLockEnabled,
+				value: settingStore.getIsRotationLockEnabled(),
 				onValueChange: (value) => settingStore.set({ isRotationLockEnabled: value })
 			});
 		}

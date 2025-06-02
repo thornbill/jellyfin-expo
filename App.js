@@ -160,8 +160,8 @@ const App = ({ skipLoadingScreen }) => {
 	}, [ isHydrated ]);
 
 	useEffect(() => {
-		console.info('rotation lock setting changed!', settingStore.isRotationLockEnabled);
-		if (settingStore.isRotationLockEnabled) {
+		console.info('rotation lock setting changed!', settingStore.getIsRotationLockEnabled());
+		if (settingStore.getIsRotationLockEnabled()) {
 			ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 		} else {
 			ScreenOrientation.unlockAsync();
@@ -169,7 +169,7 @@ const App = ({ skipLoadingScreen }) => {
 	}, [ settingStore.isRotationLockEnabled ]);
 
 	const updateScreenOrientation = async () => {
-		if (settingStore.isRotationLockEnabled) {
+		if (settingStore.getIsRotationLockEnabled()) {
 			if (rootStore.isFullscreen) {
 				// Lock to landscape orientation
 				// For some reason video apps on iPhone use LANDSCAPE_RIGHT ¯\_(ツ)_/¯

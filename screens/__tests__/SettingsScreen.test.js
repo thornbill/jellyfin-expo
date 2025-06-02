@@ -22,7 +22,10 @@ jest.mock('react-native-elements/dist/buttons/Button', () => 'Button');
 jest.mock('../../hooks/useStores');
 useStores.mockImplementation(() => ({
 	rootStore: {},
-	settingStore: {},
+	settingStore: {
+		getIsRotationLockEnabled: () => undefined,
+		getIsScreenLockEnabled: () => undefined
+	},
 	serverStore: {
 		fetchInfo: jest.fn(),
 		servers: []

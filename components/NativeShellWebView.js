@@ -120,13 +120,13 @@ true;
 					break;
 				case 'updateMediaSession':
 					// Keep the screen awake when music is playing
-					if (settingStore.isScreenLockEnabled) {
+					if (settingStore.getIsScreenLockEnabled()) {
 						activateKeepAwake();
 					}
 					break;
 				case 'hideMediaSession':
 					// When music session stops disable keep awake
-					if (settingStore.isScreenLockEnabled) {
+					if (settingStore.getIsScreenLockEnabled()) {
 						deactivateKeepAwake();
 					}
 					break;
