@@ -9,7 +9,7 @@
 import type { Api } from '@jellyfin/sdk/lib/api';
 import { MediaType } from '@jellyfin/sdk/lib/generated-client/models/media-type';
 import { getMediaInfoApi } from '@jellyfin/sdk/lib/utils/api/media-info-api';
-import { getPlaystateApi } from '@jellyfin/sdk/lib/utils/api/playstate-api';
+import { getSessionApi } from '@jellyfin/sdk/lib/utils/api/session-api';
 import * as FileSystem from 'expo-file-system';
 import { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -156,7 +156,7 @@ export const useDownloadHandler = (enabled = false) => {
 			// Report transcoding download has stopped so the server will cleanup temp files
 			if (downloadMetadata.isTranscoding) {
 				console.debug('[useDownloadHandler] Reporting transcoding download stopped', download.sessionId);
-				await getPlaystateApi(api)
+				await getSessionApi(api)
 					.reportPlaybackStopped({
 						playbackStopInfo: {
 							ItemId: download.item.Id,
