@@ -5,20 +5,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import { PublicSystemInfo } from '@jellyfin/sdk/lib/generated-client/models/public-system-info';
 import { getDisplayVersion } from '@jellyfin/sdk/lib/utils/versioning';
 
 import { fetchServerInfo, getServerUrl } from '../utils/ServerValidator';
 
 export default class ServerModel {
-	id
-
-	url
-
+	id: string
+	url: URL
+	urlString: string
 	online = false
+	info?: PublicSystemInfo
 
-	info
-
-	constructor(id, url, info) {
+	constructor(id: string, url: URL, info?: PublicSystemInfo) {
 		this.id = id;
 		this.url = url;
 		this.info = info;
