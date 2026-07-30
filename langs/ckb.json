@@ -74,6 +74,30 @@
         "fmp4Support": "پەسەندکردنی fMP4 لە HLS دا",
         "lightTheme": "بەکارهێنانی ڕووکاری ڕووناک",
         "systemTheme": "بەکارهێنانی ڕووکاری سیستەم",
-        "rotationLock": "کڵێلی سووڕانەوە"
+        "rotationLock": "کڵێلی سووڕانەوە",
+        "tabLabels": "پیشاندانی تاگی پەڕەکان"
+    },
+    "links": {
+        "website": "ماڵپەڕی جێلیفین",
+        "documentation": "بەڵگەنامەکان",
+        "source": "کۆدی سەرچاوە",
+        "translate": "وەرگێڕان",
+        "help": "وەرگرتنی یارمەتی"
+    },
+    "alerts": {
+        "deleteDownloads": {
+            "title": "سڕینەوەی داگرتنەکان",
+            "description": "ئەم ماددانە بۆ هەمیشە لەم ئامێرە دەسڕێنەوە.",
+            "confirm": "سڕینەوە {{downloadCount}} دابەزاندنەکان"
+        },
+        "deleteServer": {
+            "title": "سڕینەوەی ڕاژەکار",
+            "description": "دڵنیایت لە سڕینەوەی ڕاژەکارەکە؟ {{serverName}}?",
+            "confirm": "سڕینەوە"
+        },
+        "downloadFailed": {
+            "title": "داگرتن شکستی هێنا",
+            "description": "\"{{title}}\" دابەزاندن سەرکەوتوو نەبوو."
+        }
     }
 }
