@@ -71,6 +71,7 @@
         "version": "وەشان: {{version}}",
         "keepAwake": "هێشتنەوەی شاشە بە داگیرساوی",
         "nativeVideoPlayer": "بەکارهێنانی پلەیەری بنەڕەتیی ڤیدیۆ",
-        "fmp4Support": "پەسەندکردنی fMP4 لە HLS دا"
+        "fmp4Support": "پەسەندکردنی fMP4 لە HLS دا",
+        "lightTheme": "بەکارهێنانی ڕووکاری ڕووناک"
     }
 }
