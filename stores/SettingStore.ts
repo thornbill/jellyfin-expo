@@ -13,6 +13,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 import Themes from '../themes';
+import type { AppTheme } from '../types/appTheme';
 
 import { logger } from './middleware/logger';
 
@@ -53,7 +54,7 @@ type State = {
 
 type Actions = {
 	set: (v: Partial<State>) => void,
-	getTheme: () => any, // TODO: get typing on themes and put it here
+	getTheme: () => AppTheme,
 	reset: () => void
 }
 
