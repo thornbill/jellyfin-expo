@@ -5,7 +5,7 @@
         "delete": "Ištrinti",
         "edit": "Redaguoti",
         "ok": "Gerai",
-        "unknown": "Nežinomas",
+        "unknown": "Nežinoma",
         "play": "Leisti",
         "share": "Pasidalinti",
         "openInFiles": "Atidaryti per „Files“",
@@ -14,7 +14,7 @@
     "headings": {
         "addServer": "Pridėti serverį",
         "appearance": "Išvaizda",
-        "downloads": "Atsiuntimai",
+        "downloads": "Atsisiuntimai",
         "home": "Pagrindinis",
         "links": "Nuorodos",
         "playback": "Atkūrimas",
