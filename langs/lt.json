@@ -8,7 +8,7 @@
         "unknown": "Nežinoma",
         "play": "Leisti",
         "share": "Pasidalinti",
-        "openInFiles": "Atidaryti per „Files“",
+        "openInFiles": "Atidaryti per \"Files\"",
         "alpha": "ALPHA"
     },
     "headings": {
@@ -69,7 +69,7 @@
         "systemTheme": "Naudoti sistemos temą",
         "rotationLock": "Užrakinti pasukimą",
         "tabLabels": "Rodyti skilčių etiketes",
-        "downloadTranscoding": "Perkoduoti atsisiuntimai"
+        "downloadTranscoding": "Transkoduoti atsisiuntimai"
     },
     "links": {
         "website": "Jellyfin tinklalapis",
@@ -96,11 +96,11 @@
         },
         "downloadFailed": {
             "title": "Atsisiųsti nepavyko",
-            "description": "„{{title}}“ nepavyko atsisiųsti."
+            "description": "\"{{title}}\" nepavyko atsisiųsti."
         },
         "missingDownload": {
             "title": "Trūksta atsisiuntimo",
-            "description": "Atrodo, kad šis failas buvo pašalintas už „Jellyfin“ programėlės ribų."
+            "description": "Atrodo, kad šis failas buvo pašalintas už Jellyfin programėlės ribų."
         }
     },
     "downloads": {
