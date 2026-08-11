@@ -20,6 +20,7 @@ import type DownloadModel from '../../../models/DownloadModel';
 import { getDeviceProfile } from '../../../utils/Device';
 import { ensurePathExists } from '../../../utils/File';
 import { DownloadStatus } from '../constants/DownloadStatus';
+import { getContainerExtension } from '../utils/file';
 import { toDownloadProfile } from '../utils/profile';
 
 interface DownloadMetadata {
@@ -61,7 +62,8 @@ const getDownloadMetadata = async (
 		console.debug('[useDownloadHandler] media source will direct play/stream', firstMediaSource);
 		const endpoint = download.item.MediaType === MediaType.Video ? 'Videos' : 'Audio';
 		download.canPlay = true;
-		download.extension = `.${firstMediaSource.Container || ''}`;
+		const streamExtension = `.${firstMediaSource.Container || ''}`;
+		download.extension = getContainerExtension(download.item, firstMediaSource.Container);
 
 		const streamParams = new URLSearchParams({
 			deviceId: api.deviceInfo.id,
@@ -75,7 +77,7 @@ const getDownloadMetadata = async (
 		return {
 			isTranscoding: false,
 			url: new URL(
-				`/${endpoint}/${download.item.Id}/stream${download.extension}?${streamParams.toString()}`,
+				`/${endpoint}/${download.item.Id}/stream${streamExtension}?${streamParams.toString()}`,
 				api.basePath
 			)
 		};
@@ -84,7 +86,7 @@ const getDownloadMetadata = async (
 		console.debug('[useDownloadHandler] media source will transcode', firstMediaSource);
 
 		download.canPlay = true;
-		download.extension = `.${firstMediaSource.TranscodingContainer || ''}`;
+		download.extension = getContainerExtension(download.item, firstMediaSource.TranscodingContainer);
 
 		return {
 			isTranscoding: true,
