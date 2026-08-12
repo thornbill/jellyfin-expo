@@ -50,4 +50,4 @@ jobs:
           PR_BODY: |
             ### Changes
             Bumps the build number to ${{ inputs.build_version }}
-          GITHUB_TOKEN: ${{ secrets.JF_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
