@@ -8,6 +8,8 @@
 
 /** The different actions that can be performed on a download. */
 export const DownloadAction = {
+	/** Cancel an in progress download. */
+	Cancel: 'cancel',
 	/** Delete the download. */
 	Delete: 'delete',
 	/** Open the download in the Files app. */

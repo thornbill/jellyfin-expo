@@ -82,6 +82,28 @@ const DownloadScreen = () => {
 		}
 	}, [ downloadStore ]);
 
+	const onCancelItem = useCallback((download: DownloadModel) => {
+		Alert.alert(
+			t('alerts.stopDownload.title'),
+			t('alerts.stopDownload.description'),
+			[
+				{
+					text: t('common.cancel')
+				},
+				{
+					text: t('alerts.stopDownload.confirm'),
+					onPress: () => {
+						deleteItem(download)
+							.catch(err => {
+								console.error('[DownloadScreen] failed cancelling items', err);
+							});
+					},
+					style: 'destructive'
+				}
+			]
+		);
+	}, [ deleteItem ]);
+
 	const onDeleteItems = useCallback((downloads: DownloadModel[]) => {
 		Alert.alert(
 			t('alerts.deleteDownloads.title'),
@@ -107,28 +129,34 @@ const DownloadScreen = () => {
 	}, [ deleteItem, exitEditMode, t ]);
 
 	const onAction = useCallback(async (action: DownloadAction, item: DownloadModel) => {
-		// TODO: Allow retrying/removing failed downloads
-		if (item.status === DownloadStatus.Failed) return;
+		// Verify the download status
+		if (item.isComplete) {
+			// TODO: Allow retrying/removing failed downloads
+			if (item.status === DownloadStatus.Failed) return;
 
-		// Verify the download has not been removed from the file system
-		const info = await FileSystem.getInfoAsync(item.uri);
-		if (!info.exists) {
-			if (item.status !== DownloadStatus.Missing) {
-				item.status = DownloadStatus.Missing;
+			// Verify the download has not been removed from the file system
+			const info = await FileSystem.getInfoAsync(item.uri);
+			if (!info.exists) {
+				if (item.status !== DownloadStatus.Missing) {
+					item.status = DownloadStatus.Missing;
+					downloadStore.update(item);
+				}
+				Alert.alert(
+					t('alerts.missingDownload.title'),
+					t('alerts.missingDownload.description')
+				);
+				return;
+			} else if (item.status === DownloadStatus.Missing) {
+				// The download exists so update the status
+				item.status = DownloadStatus.Complete;
 				downloadStore.update(item);
 			}
-			Alert.alert(
-				t('alerts.missingDownload.title'),
-				t('alerts.missingDownload.description')
-			);
-			return;
-		} else if (item.status === DownloadStatus.Missing) {
-			// The download exists so update the status
-			item.status = DownloadStatus.Complete;
-			downloadStore.update(item);
 		}
 
+		// Perform the requested action
 		switch (action) {
+			case DownloadAction.Cancel:
+				return onCancelItem(item);
 			case DownloadAction.Delete:
 				return onDeleteItems([ item ]);
 			case DownloadAction.PlayInApp:

@@ -39,6 +39,12 @@ export default {
 			marginRight: 15
 		}
 	},
+	LinearProgress: {
+		color: 'primary',
+		style: {
+			borderRadius: 2
+		}
+	},
 	ListItemChevron: {
 		size: 24
 	},

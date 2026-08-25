@@ -107,6 +107,11 @@
       "title": "Reset Application",
       "description": "Are you sure you want to reset all settings?",
       "confirm": "Reset"
+    },
+    "stopDownload": {
+      "title": "Stop Download",
+      "description": "Are you sure you want to stop this download?",
+      "confirm": "Stop Download"
     }
   }
 }

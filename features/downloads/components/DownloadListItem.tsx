@@ -7,11 +7,12 @@
  */
 
 import React, { useCallback, useMemo, type FC } from 'react';
-import { ListItem } from 'react-native-elements';
+import { LinearProgress, ListItem } from 'react-native-elements';
 
 import type DownloadModel from '../../../models/DownloadModel';
 import { getItemSubtitle } from '../../../utils/baseItem';
 import type { DownloadAction } from '../constants/DownloadAction';
+import { DownloadStatus } from '../constants/DownloadStatus';
 import type { DownloadItemAction } from '../types/downloadItemAction';
 
 import DownloadStatusIndicator from './DownloadStatusIndicator';
@@ -79,6 +80,15 @@ const DownloadListItem: FC<DownloadListItemProps> = ({
 				>
 					{subtitle || item.localFilename}
 				</ListItem.Subtitle>
+				{item.status === DownloadStatus.Downloading && (
+					<LinearProgress
+						testID='loading-indicator'
+						variant='indeterminate'
+						style={{
+							marginVertical: 8
+						}}
+					/>
+				)}
 			</ListItem.Content>
 
 			<DownloadStatusIndicator

@@ -9,7 +9,6 @@
 import type { MenuAction } from '@react-native-menu/menu';
 import React, { useCallback, useContext, useMemo, type FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator } from 'react-native';
 import { ListItem, ThemeContext } from 'react-native-elements';
 
 import MenuViewButton from '../../../components/MenuViewButton/index.ios';
@@ -66,6 +65,10 @@ const DownloadStatusIndicator: FC<DownloadStatusIndicatorProps> = ({
 		return _menuActions;
 	}, [ actions, t ]);
 
+	const onCancelPress = useCallback(() => {
+		onAction(DownloadAction.Cancel);
+	}, [ onAction ]);
+
 	const onMenuPress = useCallback(({ nativeEvent }: MenuPressEvent) => {
 		const action = Object.values(DownloadAction).find(a => a === nativeEvent.event);
 		if (action) onAction(action);
@@ -88,11 +91,11 @@ const DownloadStatusIndicator: FC<DownloadStatusIndicatorProps> = ({
 			);
 		case DownloadStatus.Downloading:
 			return (
-				<ActivityIndicator
-					testID='loading-indicator'
-					style={{
-						alignSelf: 'center'
-					}}
+				<ListItem.Chevron
+					name='stop'
+					type='ionicon'
+					color={theme.colors?.black}
+					onPress={onCancelPress}
 				/>
 			);
 		case DownloadStatus.Failed:
